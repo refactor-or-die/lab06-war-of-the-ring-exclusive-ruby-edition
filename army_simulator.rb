@@ -9,7 +9,62 @@
 # POJEDYNCZE JEDNOSTKI
 # ============================================================================
 
+module MilitaryUnit
+
+  def initialize(name)
+    @name = name
+    @units = []
+  end
+  def get_strength
+    total = 0
+    @units.each { |unit| total += unit.strength }
+    total
+  end
+
+  def count_units
+    total = 0
+    @units.each { |unit| total += unit.count_units }
+    total
+  end
+
+  def get_units_by_type(unit_type)
+    result = []
+    @units.each do |unit|
+      result << unit.get_units_by_type(unit_type)
+    end
+    result
+  end
+
+  def get_strongest_unit
+    return nil if @units.empty?
+    strongest = @units.first.get_strongest_unit
+    @units.each do |unit|
+      strongest = unit.get_strongest_unit if unit.get_strongest_unit.get_strength > strongest.get_strength
+    end
+    strongest
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = ["#{prefix}[#{@unit_type}: #{@name}] (sila: #{get_strength}, jednostek: #{count_units})"]
+    @units.each do |unit|
+      lines << unit.show_strengthless(indent)
+    end
+    lines.join("\n")
+  end
+
+  def show_strengthless(indent = 0)
+    prefix = "  " * indent
+    lines = ["#{prefix}[#{@unit_type}: #{@name}]"]
+    @units.each do |unit|
+      lines << unit.show_strengthless(indent)
+    end
+    lines.join("\n")
+  end
+end
+
 class Orc
+  include MilitaryUnit
   attr_reader :name, :unit_type, :strength, :description
 
   def initialize(name)
@@ -17,6 +72,32 @@ class Orc
     @unit_type = "Orc"
     @strength = 5
     @description = "Plugawy sluga Ciemnosci"
+  end
+
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    lines.join("\n")
   end
 end
 
@@ -29,6 +110,34 @@ class UrukHai
     @strength = 12
     @description = "Doskonaly wojownik stworzony przez Sarumana"
   end
+
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
+  end
 end
 
 class Troll
@@ -39,6 +148,34 @@ class Troll
     @unit_type = "Troll"
     @strength = 45
     @description = "Ogromna bestia"
+  end
+
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
   end
 end
 
@@ -51,6 +188,33 @@ class Nazgul
     @strength = 100
     @description = "Upiur Pierscienia"
   end
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
+  end
 end
 
 class Elf
@@ -61,6 +225,33 @@ class Elf
     @unit_type = "Elf"
     @strength = 15
     @description = "Wieczny, madry i smiertelnie celny"
+  end
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
   end
 end
 
@@ -73,6 +264,33 @@ class Human
     @strength = 8
     @description = "Smiertelnik broniacy swojej ziemi"
   end
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
+  end
 end
 
 class Dwarf
@@ -84,6 +302,33 @@ class Dwarf
     @strength = 14
     @description = "Nieustepliwy wojownik z gor"
   end
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
+  end
 end
 
 class Wizard
@@ -94,6 +339,33 @@ class Wizard
     @unit_type = "Wizard"
     @strength = 150
     @description = "Maiar w ludzkiej postaci"
+  end
+  def get_strength
+    @strength
+  end
+
+  def count_units
+    1
+  end
+
+  def get_units_by_type(unit_type)
+    if @unit_type == unit_type
+      return [self]
+    end
+    []
+  end
+
+  def get_strongest_unit
+    self
+  end
+
+  def show(indent = 0)
+    prefix = "  " * indent
+    lines = []
+    @units.each do |unit|
+      lines << "#{prefix}  - #{@name} (#{@unit_type}, sila: #{@strength})"
+    end
+    lines.join("\n")
   end
 end
 
@@ -108,116 +380,26 @@ class Squad
   def initialize(name)
     @name = name
     @units = []
+    @unit_type = "Oddział"
   end
 
   def add_unit(unit)
     @units << unit
   end
-
-  def get_strength
-    total = 0
-    @units.each { |unit| total += unit.strength }
-    total
-  end
-
-  def count_units
-    @units.length
-  end
-
-  # PETLA po jednostkach!
-  def get_units_by_type(unit_type)
-    result = []
-    @units.each do |unit|
-      result << unit if unit.unit_type == unit_type
-    end
-    result
-  end
-
-  # PETLA po jednostkach!
-  def get_strongest_unit
-    return nil if @units.empty?
-    strongest = @units.first
-    @units.each do |unit|
-      strongest = unit if unit.strength > strongest.strength
-    end
-    strongest
-  end
-
-  def show(indent = 0)
-    prefix = "  " * indent
-    lines = ["#{prefix}[Oddzial: #{@name}] (sila: #{get_strength}, jednostek: #{count_units})"]
-    @units.each do |unit|
-      lines << "#{prefix}  - #{unit.name} (#{unit.unit_type}, sila: #{unit.strength})"
-    end
-    lines.join("\n")
-  end
 end
 
 class Legion
   attr_reader :name
-  attr_accessor :squads
+  attr_accessor :units
 
   def initialize(name)
     @name = name
-    @squads = []
+    @units = []
+    @unit_type = "Legion"
   end
 
   def add_squad(squad)
-    @squads << squad
-  end
-
-  # PETLA W PETLI!
-  def get_strength
-    total = 0
-    @squads.each do |squad|
-      squad.units.each do |unit|
-        total += unit.strength
-      end
-    end
-    total
-  end
-
-  # KOLEJNA PETLA W PETLI!
-  def count_units
-    count = 0
-    @squads.each { |squad| count += squad.units.length }
-    count
-  end
-
-  # PETLA W PETLI - zbieranie jednostek po typie!
-  def get_units_by_type(unit_type)
-    result = []
-    @squads.each do |squad|
-      squad.units.each do |unit|
-        result << unit if unit.unit_type == unit_type
-      end
-    end
-    result
-  end
-
-  # PETLA W PETLI - szukanie najsilniejszego!
-  def get_strongest_unit
-    strongest = nil
-    @squads.each do |squad|
-      squad.units.each do |unit|
-        if strongest.nil? || unit.strength > strongest.strength
-          strongest = unit
-        end
-      end
-    end
-    strongest
-  end
-
-  def show(indent = 0)
-    prefix = "  " * indent
-    lines = ["#{prefix}[Legion: #{@name}] (sila: #{get_strength}, jednostek: #{count_units})"]
-    @squads.each do |squad|
-      lines << "#{prefix}  [Oddzial: #{squad.name}]"
-      squad.units.each do |unit|
-        lines << "#{prefix}    - #{unit.name} (#{unit.unit_type}, sila: #{unit.strength})"
-      end
-    end
-    lines.join("\n")
+    @units << squad
   end
 end
 
@@ -228,63 +410,11 @@ class Army
   def initialize(name, faction)
     @name = name
     @faction = faction
-    @legions = []
+    @units = []
   end
 
   def add_legion(legion)
-    @legions << legion
-  end
-
-  # MEGA PETLA W PETLI W PETLI!
-  def get_strength
-    total = 0
-    @legions.each do |legion|
-      legion.squads.each do |squad|
-        squad.units.each do |unit|
-          total += unit.strength
-        end
-      end
-    end
-    total
-  end
-
-  # TO SAMO CO WYZEJ!
-  def count_units
-    count = 0
-    @legions.each do |legion|
-      legion.squads.each do |squad|
-        count += squad.units.length
-      end
-    end
-    count
-  end
-
-  # 3 POZIOMY PETLI!
-  def get_units_by_type(unit_type)
-    result = []
-    @legions.each do |legion|
-      legion.squads.each do |squad|
-        squad.units.each do |unit|
-          result << unit if unit.unit_type == unit_type
-        end
-      end
-    end
-    result
-  end
-
-  # 3 POZIOMY PETLI - szukanie najsilniejszego!
-  def get_strongest_unit
-    strongest = nil
-    @legions.each do |legion|
-      legion.squads.each do |squad|
-        squad.units.each do |unit|
-          if strongest.nil? || unit.strength > strongest.strength
-            strongest = unit
-          end
-        end
-      end
-    end
-    strongest
+    @units << legion
   end
 
   def show(indent = 0)
@@ -296,16 +426,9 @@ class Army
       "#{prefix}" + "-" * 40
     ]
     
-    @legions.each do |legion|
-      lines << "#{prefix}  [Legion: #{legion.name}]"
-      legion.squads.each do |squad|
-        lines << "#{prefix}    [Oddzial: #{squad.name}]"
-        squad.units.each do |unit|
-          lines << "#{prefix}      - #{unit.name} (#{unit.unit_type}, sila: #{unit.strength})"
-        end
-      end
+    @units.each do |legion|
+      lines << legion.show_strengthless(indent)
     end
-    
     lines.join("\n")
   end
 end
